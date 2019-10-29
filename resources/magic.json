@@ -1,0 +1,13 @@
+{
+    "childs": [
+        {
+            "name": "bunny",
+            "type": "sprite",
+            "textureUrl": "bunny.png",
+            "position": {
+                "x": 20,
+                "y": 20
+            }
+        }
+    ]
+}
