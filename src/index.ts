@@ -11,8 +11,9 @@ fetch("/magic.json")
         var newItem;
         if (element.type == "sprite") {
             newItem = PIXI.Sprite.from(element.textureUrl);
-            
         }
+        newItem.position = element.position;
+
         appManager.app.stage.addChild(newItem);
     });
 });
