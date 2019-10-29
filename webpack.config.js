@@ -35,7 +35,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Gamesys Bingo',
+      title: 'Tenerife',
     }),
     new webpack.ProvidePlugin({
       PIXI: 'pixi.js'
