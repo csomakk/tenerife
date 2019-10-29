@@ -1,24 +1,49 @@
 import { DateMediator } from './dateMediator';
+import { Ticker } from 'pixi.js';
 
 export class Factory {
+
+    linkMediator(item:any, mediatorKey:any) {
+        switch (mediatorKey) {
+            case "dateText" : {
+                item.mediatorInstance = new DateMediator();
+                break;
+            }
+        }
+        if (item.mediatorInstance) {
+            item.mediatorInstance.view = item;
+            item.mediatorInstance.init();
+        }
+    }
+
+    createItem(data:any):any {
+        switch (data.type) {
+            case "sprite" : {
+                return PIXI.Sprite.from(data.textureUrl);
+            }
+            case "text" : {
+                return new PIXI.Text("");
+            }
+            default: {
+                return new PIXI.Container();
+            }
+        }   
+    }
+
+    addAnimationIfNeeded(element:any, ticker:Ticker) {
+        if (element.onTick != null) {
+            ticker.add((delta) => {                
+                if (element.onTick.rotate != null) {
+                    element.rotation += element.onTick.rotate * delta;
+                }
+            });
+        }
+    }
+
     createChildren(parent:PIXI.Container, designJson:any, ticker: PIXI.Ticker) {
         designJson.forEach((element:any) => {
-            let newItem:any;
-            switch (element.type) {
-                case "sprite" : {
-                    newItem = PIXI.Sprite.from(element.textureUrl);
-                    break;
-                }
-                case "text" : {
-                    newItem = new PIXI.Text("");
-                    break;
-                }
-                default: {
-                    newItem = new PIXI.Container();
-                    break;
-                }
-            }   
-    
+            let newItem = this.createItem(element);
+            
             for (let key in element) {
                 if (["children", "mediator"].indexOf(key) == -1) {
                     newItem[key] = element[key];
@@ -29,25 +54,8 @@ export class Factory {
                 this.createChildren(newItem, element.children, ticker);
             }
     
-            switch (element.mediator) {
-                case "dateText" : {
-                    newItem.mediatorInstance = new DateMediator();
-                    
-                    break;
-                }
-            }
-            if (newItem.mediatorInstance) {
-                newItem.mediatorInstance.view = newItem;
-                newItem.mediatorInstance.init();
-            }
-    
-            if (element.onTick != null) {
-                ticker.add((delta) => {                
-                    if (element.onTick.rotate != null) {
-                        newItem.rotation += element.onTick.rotate * delta;
-                    }
-                });
-            }
+            this.linkMediator (newItem, element.mediator);
+            this.addAnimationIfNeeded(newItem, ticker)
             
             parent.addChild(newItem);
         });
