@@ -3,10 +3,27 @@
         {
             "name": "bunny",
             "type": "sprite",
+            "textureUrl": "bunny.png"
+        },
+        {
+            "name": "bunny",
+            "type": "sprite",
             "textureUrl": "bunny.png",
             "position": {
                 "x": 20,
                 "y": 20
+            }
+        },
+        {
+            "name": "bunny",
+            "type": "sprite",
+            "textureUrl": "bunny.png",
+            "position": {
+                "x": 20,
+                "y": 60
+            },
+            "onTick": {
+                "rotate": 0.1
             }
         }
     ]
