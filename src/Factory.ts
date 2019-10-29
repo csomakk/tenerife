@@ -13,10 +13,20 @@ export class Factory {
                     newItem = new PIXI.Text("");
                     break;
                 }
+                default: {
+                    newItem = new PIXI.Container();
+                    break;
+                }
             }   
     
             for (let key in element) {
-                newItem[key] = element[key];
+                if (["children", "mediator"].indexOf(key) == -1) {
+                    newItem[key] = element[key];
+                }
+            }
+
+            if (element.children) {
+                this.createChildren(newItem, element.children, ticker);
             }
     
             switch (element.mediator) {

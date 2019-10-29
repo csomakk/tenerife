@@ -58,6 +58,24 @@
             },
             "mediator": "dateText"
 
+        },
+        {
+            "name": "more stuff",
+            "children": [
+                {
+                    "name": "bunny1",
+                    "type": "sprite",
+                    "textureUrl": "bunny.png"
+                },
+                {
+                    "type": "text",
+                    "text": "hello tenerife2"
+                }
+            ],
+            "position": {
+                "x": 100,
+                "y": 100
+            }
         }
 
     ]
