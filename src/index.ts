@@ -9,8 +9,15 @@ fetch("/magic.json")
     console.log('weee');
     body.childs.forEach((element:any) => {
         let newItem:any;
-        if (element.type == "sprite") {
-            newItem = PIXI.Sprite.from(element.textureUrl);
+        switch (element.type) {
+            case "sprite" : {
+                newItem = PIXI.Sprite.from(element.textureUrl);
+                break;
+            }
+            case "text" : {
+                newItem = new PIXI.Text("");
+                break;
+            }
         }
 
         for (let key in element) {

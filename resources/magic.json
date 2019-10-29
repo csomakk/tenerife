@@ -46,6 +46,12 @@
             "onTick": {
                 "rotate": 0.05
             }
+        },
+        {
+            "name": "bunny",
+            "type": "text",
+            "text": "hello tenerife"
         }
+
     ]
 }
