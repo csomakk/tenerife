@@ -50,7 +50,13 @@
         {
             "name": "bunny",
             "type": "text",
-            "text": "hello tenerife"
+            "text": "hello tenerife",
+            "style": {
+                "fill": "white",
+                "fontFamily": "arial",
+                "dropShadow": true
+            }
+
         }
 
     ]
