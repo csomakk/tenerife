@@ -8,15 +8,13 @@ fetch("/magic.json")
     .then(body => {
     console.log('weee');
     body.childs.forEach((element:any) => {
-        let newItem:PIXI.DisplayObject;
+        let newItem:any;
         if (element.type == "sprite") {
             newItem = PIXI.Sprite.from(element.textureUrl);
         }
-        if (element.position != null) {
-            newItem.position = element.position;
-        }
-        if (element.position != null) {
-            newItem.name = element.name;
+
+        for (let key in element) {
+            newItem[key] = element[key];
         }
         if (element.onTick != null) {
             appManager.app.ticker.add((delta) => {
