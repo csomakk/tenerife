@@ -55,7 +55,8 @@
                 "fill": "white",
                 "fontFamily": "arial",
                 "dropShadow": true
-            }
+            },
+            "mediator": "dateText"
 
         }
 

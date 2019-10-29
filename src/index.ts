@@ -1,4 +1,5 @@
 import { PixiAppManager } from './pixi/pixiAppManager';
+import { DateMediator } from './dateMediator';
 
 var appManager = new PixiAppManager();
 appManager.createApp();
@@ -18,18 +19,29 @@ fetch("/magic.json")
                 newItem = new PIXI.Text("");
                 break;
             }
-        }
+        }   
 
         for (let key in element) {
             newItem[key] = element[key];
         }
+
+        switch (element.mediator) {
+            case "dateText" : {
+                newItem.mediatorInstance = new DateMediator();
+                
+                break;
+            }
+        }
+        if (newItem.mediatorInstance) {
+            newItem.mediatorInstance.view = newItem;
+            newItem.mediatorInstance.init();
+        }
+
         if (element.onTick != null) {
-            appManager.app.ticker.add((delta) => {
-                console.log('tick');
+            appManager.app.ticker.add((delta) => {                
                 if (element.onTick.rotate != null) {
                     newItem.rotation += element.onTick.rotate * delta;
                 }
-               
             });
         }
         
