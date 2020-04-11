@@ -1,10 +1,10 @@
 import { Mediator } from "./Mediator";
 
-export class DateMediator extends Mediator{
+export class DateMediator extends Mediator {
     
     init() {
         console.log('initing');
-        (this.view as PIXI.Text).text = "2019"
+        (this.view as Element).innerHTML = new Date().toDateString();
     }
 
 }

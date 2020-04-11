@@ -6,7 +6,7 @@
             "textureUrl": "bunny.png"
         },
         {
-            "name": "bunny",
+            "name": "bunny2",
             "type": "sprite",
             "textureUrl": "bunny.png",
             "position": {
@@ -15,7 +15,7 @@
             }
         },
         {
-            "name": "bunny",
+            "name": "bunny3",
             "type": "sprite",
             "textureUrl": "bunny.png",
             "position": {
@@ -31,7 +31,7 @@
             }
         },
         {
-            "name": "bunny",
+            "name": "bunny4",
             "type": "sprite",
             "textureUrl": "bunny.png",
             "position": {
@@ -44,11 +44,11 @@
                 "y" : 0.5
             },
             "onTick": {
-                "rotate": 0.05
+                "rotate": 0.0005
             }
         },
         {
-            "name": "bunny",
+            "name": "bunny5",
             "type": "text",
             "text": "hello tenerife",
             "style": {
