@@ -1,4 +1,6 @@
 import { Factory } from './Factory';
+var Stats = require('../node_modules/stats.js')
+import { Animator } from './Animator';
 
 fetch("/magic.json")
     .then(response => response.json())
@@ -7,3 +9,7 @@ fetch("/magic.json")
         factory.createChildren(window.document.body, body.childs);
 });
 
+var stats = new Stats();
+document.body.appendChild( stats.dom );
+
+Animator.init(stats);

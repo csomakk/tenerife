@@ -1,5 +1,7 @@
 import { DateMediator } from './dateMediator';
 import { Ticker, Transform } from 'pixi.js';
+import { Animator } from './Animator';
+import { BunnyMark } from './bunnyMark';
 
 export class Factory {
 
@@ -7,6 +9,10 @@ export class Factory {
         switch (mediatorKey) {
             case "dateText" : {
                 item.mediatorInstance = new DateMediator();
+                break;
+            }
+            case "bunnyMark": {
+                item.mediatorInstance = new BunnyMark();
                 break;
             }
         }
@@ -36,38 +42,16 @@ export class Factory {
 
     addAnimationIfNeeded(element:any) {        
         var thisRef = this;
-        if (element.onTick != null) {
-            console.log('aaa');
-            Factory.thisStatic = this;
-            window.requestAnimationFrame(this.renderAnimationFrame);
-            this.animRenderCallbacks.push((delta:number) => {                
+        if (element.onTick != null) {            
+            Animator.addAnimation((delta:number) => {                
                 if (element.onTick.rotate != null) {
                     thisRef.addToRotation(element, element.onTick.rotate * delta / 1000);
                 }
             });
         }
     }
-
-    lastFrameAt = 0;
-    animRenderCallbacks:any = [];
-
-    static thisStatic:Factory;
-
-    renderAnimationFrame(timestamp:number) {
-        var thisRef = Factory.thisStatic;
-        window.requestAnimationFrame(thisRef.renderAnimationFrame);
-        
-        if (!thisRef.lastFrameAt) {
-            thisRef.lastFrameAt = timestamp;
-        }
-        var delta = timestamp;
-        
-        thisRef.animRenderCallbacks.forEach((callback:any) => {
-            callback(delta);
-        });
-    }
-
-    appendStyle(element:Element, key:string, value: string) {
+    
+    static appendStyle(element:Element, key:string, value: string) {
         var style = element.getAttribute("style");
         if (!style) {
             style = "";
@@ -78,10 +62,9 @@ export class Factory {
     }
 
     updateStyle(element:Element, key:string, value: string) {
-        var style = element.getAttribute("style");
-        console.log("update");
+        var style = element.getAttribute("style");    
         if (!style) {
-            this.appendStyle(element, key, value);
+            Factory.appendStyle(element, key, value);
             return;
         }
         var styles = style.split(";");
@@ -109,11 +92,12 @@ export class Factory {
         }
         
         var newRotation = currentRotation + amountInDegree;
-        this.updateStyle(element, "transform", "transform: rotate(" + newRotation + "deg)");    
-        console.log('newr', newRotation);
+        this.updateStyle(element, "transform", "transform: rotate(" + newRotation + "deg)");            
     }
 
-
+    static updatePosition(element:Element, x:number, y:number) {
+        element.setAttribute("style", "transform: translate("+ x + "px," + y + "px);position:absolute;");    
+    }
 
     createChildren(parent:Node, designJson:any) {
         designJson.forEach((element:any) => {
@@ -122,18 +106,25 @@ export class Factory {
             for (let key in element) {
                 switch (key) {
                     case "position": 
-                        this.appendStyle((newItem as Element), "left", element[key].x + "px");
-                        this.appendStyle((newItem as Element), "top", element[key].y + "px");
-                        this.appendStyle((newItem as Element), "position", "absolute");
+                        Factory.appendStyle((newItem as Element), "left", element[key].x + "px");
+                        Factory.appendStyle((newItem as Element), "top", element[key].y + "px");
+                        Factory.appendStyle((newItem as Element), "position", "absolute");
                         break;
                     case "text": 
                         (newItem as Element).innerHTML = element[key];
                         break;
                     case "anchor": 
                             //this.appendStyle((newItem as Element), "transform", "translate("+ element[key].x * -100 + "%, "+element[key].y * -100+"%)");
-                            this.appendStyle((newItem as Element), "transform", "rotate(50deg)");
-                            this.appendStyle((newItem as Element), "position", "absolute");
-                        break;
+                            Factory.appendStyle((newItem as Element), "transform", "rotate(50deg)");
+                            Factory.appendStyle((newItem as Element), "position", "absolute");
+                        break;                
+                    case "multiply": {
+                        for (var i = 0; i < element[key]; i++) {
+                            var multipliedItem = this.createItem(element, parent);
+                            parent.appendChild(multipliedItem);
+                            this.linkMediator (multipliedItem, element.mediator);
+                        }
+                    }
                 }
                 if (["children", "mediator"].indexOf(key) == -1) {
                     (newItem as any)[key] = element[key];            

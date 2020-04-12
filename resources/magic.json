@@ -12,7 +12,9 @@
             "position": {
                 "x": 20,
                 "y": 20
-            }
+            },
+            "mediator": "bunnyMark",
+            "multiply": 100
         },
         {
             "name": "bunny3",
