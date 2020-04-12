@@ -1,6 +1,6 @@
+import { Animator } from './Animator';
 import { Factory } from './Factory';
 var Stats = require('../node_modules/stats.js')
-import { Animator } from './Animator';
 
 fetch("/magic.json")
     .then(response => response.json())
